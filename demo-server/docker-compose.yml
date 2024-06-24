@@ -1,0 +1,19 @@
+version: '3'
+
+services:
+  vuln:
+    image: php:7.2-apache
+    volumes:
+      - ./vuln/src:/var/www/html
+    ports:
+      - 8080:80
+
+  waf:
+    build: ./waf
+    ports:
+      - 8081:9999
+    depends_on:
+      - vuln
+    environment:
+      - SERVICE_NAME=vuln
+      - SERVICE_PORT=80
